@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+</head>
+
+<body>
+    
+    <main class="background">
+      <section class="title"><h1>Tic-Tac-Toe</h1></section>
+      <section class="display">
+        Player <span class="display_player">X</span>'s Turn
+      </section>
+      <section class="container">
+      <div id="0" onclick="handleClick('0')" class="tiles"></div>
+      <div id="1" onclick="handleClick('1')"class="tiles"></div>
+      <div id="2" onclick="handleClick('2')"class="tiles"></div>
+      <div id="3" onclick="handleClick('3')"class="tiles"></div>
+      <div id="4" onclick="handleClick('4')"class="tiles"></div>
+      <div id="5" onclick="handleClick('5')"class="tiles"></div>
+      <div id="6" onclick="handleClick('6')"class="tiles"></div>
+      <div id="7" onclick="handleClick('7')"class="tiles"></div>
+      <div id="8" onclick="handleClick('8')"class="tiles"></div>
+    </section>
+    <section class="display_winner"></section>
+    <section class="controls">
+      <button class="reset" onclick="resetGame()">Reset</button>
+    </section>
+</body>
+<script>
+let board = ["","","","","","","","","",];
+let currentPlayer = 'X';
+let gameActive = true;
+const tile = document.querySelectorAll(".tiles");
+const displayResult = document.querySelector(".display_winner");
+const displayPlayer = document.querySelector(".display_player");
+
+
+ function handleClick(index){
+  if(board[index] === "" && gameActive === true){
+    board[index] = currentPlayer;
+    tile[index].innerText = currentPlayer;
+      if(checkWinner()){
+        displayResult.innerText = (`Player ${currentPlayer} Won`);
+        gameActive= false;
+      }
+      else if (board.every(tile => tile !== "")) {
+          displayResult.innerText = "Match Draw";
+          gameActive = false;
+      }
+      else{
+        currentPlayer = currentPlayer === 'X' ? '0' : 'X';//if (CurrentPlayer === 'X'){currentPlayer = 'Y'} else{currentPlayer='X'}
+        displayPlayer.innerHTML = currentPlayer;
+      }
+  }
+
+ }
+
+ function checkWinner() {
+  const winPatterns = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], //0, 1, 2
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], //3, 4, 5
+    [0, 4, 8], [2, 4, 6]             //6, 7, 8
+  ];
+
+  for (let i = 0; i < winPatterns.length; i++) {
+    const pattern = winPatterns[i];
+    const a = pattern[0];
+    const b = pattern[1];
+    const c = pattern[2];
+
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      for (let j = 0; j < pattern.length; j++) {
+            const index = pattern[j];
+            tile[index].style.backgroundColor = 'gold';
+          }
+      return true;
+    }
+  }
+
+  return false;
+}
+
+ function resetGame() {
+
+    currentPlayer = 'X';
+    board = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+    displayResult.innerText = currentPlayer;
+    tile.forEach(tile => {
+        tile.innerText = '';
+        tile.style.backgroundColor='';
+    });
+    displayResult.innerText='';
+   
+ }
+  
+</script>
+
+<style>
+*{
+  padding: 0;
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+}    
+.background{
+  background-color: #12181b;
+  height: 100vh;
+  padding-top: 1px;
+
+}
+.title{
+  color: white;
+  text-align: center;
+  font-size: 40px;
+  margin-top: 10%;
+}
+.display{
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  margin-top: 1px;
+  margin-bottom: 10px;
+}
+.container{
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr  1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  color: white;
+  max-width: 300px;
+}
+.tiles{
+  border: 1px solid white;
+  min-width: 100px;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  cursor: pointer;
+  color: white;
+}
+.tiles:hover{
+  background-color: rgb(200, 224, 216);
+}
+
+.playerX{
+  color:aqua;
+}
+.player0{
+  color:rgb(131, 255, 131)
+}
+.controls{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.reset{
+  background-color: #FF3860;
+    color:white;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 20px;
+    margin-left: 2px;
+    cursor: pointer;
+}
+.display_winner{
+  color: white;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  /* font-weight: bold; */
+}
+</style>
+
+</html>
